@@ -92,6 +92,13 @@ export class ${typeName} extends TypeChainContract {
               }`;
           })
           .join(";\n")}
+  }
+  
+  export namespace ${typeName}EventTypes {
+    ${input.events.map(event => {
+      const eventParams = codeGenForEventArgs(event.inputs, false);
+      return `export type ${event.name}EventArgs = ${eventParams};`;
+    }).join('\n\n')}
   }`;
 }
 

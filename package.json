@@ -1,6 +1,6 @@
 {
-  "name": "typechain",
-  "version": "0.1.4",
+  "name": "@spacedust/typechain",
+  "version": "0.2.5",
   "license": "MIT",
   "repository": "https://github.com/Neufund/Typechain",
   "devDependencies": {

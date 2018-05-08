@@ -83,12 +83,20 @@ export class ArrayType extends EvmType {
     super();
   }
 
+  generateCodeForInputOutput(): string {
+    if (this.itemType instanceof BytesType) {
+      return "string";
+    } else {
+      return this.itemType.generateCodeForOutput() + "[]";
+    }
+  }
+
   generateCodeForOutput(): string {
-    return this.itemType.generateCodeForOutput() + "[]";
+    return this.generateCodeForInputOutput();
   }
 
   generateCodeForInput(): string {
-    return this.itemType instanceof BytesType ? "string" : this.generateCodeForOutput();
+    return this.generateCodeForInputOutput();
   }
 
   generateCodeForInputConversion(paramName: string): string {

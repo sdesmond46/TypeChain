@@ -56,6 +56,11 @@ export class DeferredTransactionWrapper<T extends ITxParams> {
       ...this.methodArgs,
     ) as string;
   }
+
+  estimateGas(): Promise<BigNumber> {
+    const method = this.parentContract.rawWeb3Contract[this.methodName].estimateGas;
+    return promisify(method, this.methodArgs).then(gasString => new BigNumber(gasString));
+  }
 }
 
 type WatchEventCallback<Event> = (err: any, log: DecodedLogEntry<Event>) => void;
