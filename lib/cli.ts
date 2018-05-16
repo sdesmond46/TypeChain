@@ -9,7 +9,7 @@ import * as prettier from "prettier";
 import { generateSource } from "./generateSource";
 import { parseArgs } from "./parseArgs";
 import { copyRuntime } from "./copyRuntime";
-import { extractAbi } from "./abiParser";
+import { extractAbi, extractByteCode } from "./abiParser";
 
 const { blue, red, green, yellow } = chalk;
 const cwd = process.cwd();
@@ -81,6 +81,7 @@ function processFile(
 
   const abiString = readFileSync(absPath).toString();
   const rawAbi = extractAbi(abiString);
+  const rawBytecode = extractByteCode(abiString);
 
   if (rawAbi.length === 0) {
     // tslint:disable-next-line
@@ -88,7 +89,7 @@ function processFile(
     return;
   }
 
-  const typescriptSourceFile = generateSource(rawAbi, {
+  const typescriptSourceFile = generateSource(rawAbi, rawBytecode, {
     fileName: filenameWithoutAnyExtensions,
     relativeRuntimePath: runtimeRelativePath,
   });

@@ -227,3 +227,7 @@ export function extractAbi(rawJson: string): RawAbiDefinition[] {
 
   throw new MalformedAbiError("Not a valid ABI");
 }
+
+export function extractByteCode(rawJson: string): string {
+  return JSON.parse(rawJson).bytecode;
+}

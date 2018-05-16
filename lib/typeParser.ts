@@ -13,6 +13,10 @@ export class BooleanType extends EvmType {
   generateCodeForOutput() {
     return "boolean";
   }
+
+  generateCodeForInputConversion(paramName: string): string {
+    return `!!${paramName}`;
+  }
 }
 
 export class IntegerType extends EvmType {

@@ -23,7 +23,12 @@ export class TypeChainContract {
   public readonly rawWeb3Contract: any;
   public readonly address: string;
 
-  constructor(web3: any, address: string | BigNumber, public readonly contractAbi: object) {
+  constructor(
+    web3: any,
+    address: string | BigNumber,
+    public readonly contractAbi: object,
+    public readonly rawBytecode: string,
+  ) {
     this.address = address.toString();
     this.rawWeb3Contract = web3.eth.contract(contractAbi).at(address);
   }
@@ -57,9 +62,11 @@ export class DeferredTransactionWrapper<T extends ITxParams> {
     ) as string;
   }
 
-  estimateGas(): Promise<BigNumber> {
+  estimateGas(params: T): Promise<BigNumber> {
     const method = this.parentContract.rawWeb3Contract[this.methodName].estimateGas;
-    return promisify(method, this.methodArgs).then(gasString => new BigNumber(gasString));
+    return promisify(method, [...this.methodArgs, params]).then(
+      gasString => new BigNumber(gasString),
+    );
   }
 }
 
@@ -185,8 +192,4 @@ export interface LogEntry {
 export interface DecodedLogEntry<A> extends LogEntry {
   event: string;
   args: A;
-}
-
-interface IDictionary<T = string> {
-  [id: string]: T;
 }
